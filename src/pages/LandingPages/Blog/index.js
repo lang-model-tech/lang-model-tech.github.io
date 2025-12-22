@@ -41,6 +41,7 @@ import footerRoutes from "footer.routes";
 // Images
 import heroImage from "assets/images/bg3.jpg";
 import { getPostsByCategory } from "./postData";
+import PropTypes from "prop-types";
 
 function BlogCard({ post }) {
   return (
@@ -87,6 +88,21 @@ function BlogCard({ post }) {
   );
 }
 
+BlogCard.propTypes = {
+  post: PropTypes.shape({
+    author: PropTypes.string.isRequired,
+    categorySlug: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date), PropTypes.number])
+      .isRequired,
+
+    category: PropTypes.string.isRequired,
+    tagline: PropTypes.string,
+  }).isRequired,
+};
+
 function Section({ title, posts }) {
   return (
     <MKBox component="section" py={4}>
@@ -103,6 +119,24 @@ function Section({ title, posts }) {
     </MKBox>
   );
 }
+
+Section.propTypes = {
+  posts: PropTypes.shape([
+    {
+      author: PropTypes.string.isRequired,
+      categorySlug: PropTypes.string.isRequired,
+      slug: PropTypes.string.isRequired,
+      image: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date), PropTypes.number])
+        .isRequired,
+
+      category: PropTypes.string.isRequired,
+      tagline: PropTypes.string,
+    },
+  ]).isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 function Blog() {
   const [featuredPost, setFeaturedPost] = useState(null);
@@ -132,7 +166,7 @@ function Blog() {
         setError(null);
       } catch (err) {
         if (active) {
-          console.log(err)
+          console.log(err);
           setError("We couldn't load the blog right now.");
           setFeaturedPost(null);
           setNewsPosts([]);

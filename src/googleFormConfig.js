@@ -28,13 +28,7 @@ const googleFormConfig = {
         "Other",
       ],
       excitementScale: "entry.218868993",
-      excitementScaleOptions: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-      ],
+      excitementScaleOptions: ["1", "2", "3", "4", "5"],
       additionalComments: "entry.353772807",
       timezone: "entry.196963240",
       timezoneOptions: [
@@ -43,7 +37,7 @@ const googleFormConfig = {
         "Mountain Time (MT)",
         "Pacific Time (PT)",
         "Other/International",
-      ]
+      ],
     },
   },
 };

@@ -7,7 +7,7 @@ const postPaths = [
 ];
 
 const imageMap = {
-  "blog2": require("assets/images/examples/blog2.jpg"),
+  blog2: require("assets/images/examples/blog2.jpg"),
   "testimonial-6-3": require("assets/images/examples/testimonial-6-3.jpg"),
   "blog-9-4": require("assets/images/examples/blog-9-4.jpg"),
   "testimonial-6-2": require("assets/images/examples/testimonial-6-2.jpg"),
@@ -33,7 +33,10 @@ function parseFrontmatter(markdown = "") {
     const separatorIndex = line.indexOf(":");
     if (separatorIndex === -1) return;
     const key = line.slice(0, separatorIndex).trim();
-    const value = line.slice(separatorIndex + 1).trim().replace(/^"(.*)"$/, "$1");
+    const value = line
+      .slice(separatorIndex + 1)
+      .trim()
+      .replace(/^"(.*)"$/, "$1");
     data[key] = value;
   });
 

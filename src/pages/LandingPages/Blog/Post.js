@@ -4,13 +4,16 @@ import { useParams, Link } from "react-router-dom";
 // react
 import { useEffect, useState } from "react";
 
+// prop-types is a library for typechecking of props
+import PropTypes from "prop-types";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -66,6 +69,21 @@ function PostSuggestion({ post }) {
     </Card>
   );
 }
+
+PostSuggestion.propTypes = {
+  post: PropTypes.shape({
+    // author: PropTypes.string.isRequired,
+    categorySlug: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date), PropTypes.number])
+      .isRequired,
+
+    category: PropTypes.string.isRequired,
+    tagline: PropTypes.string,
+  }).isRequired,
+};
 
 function Post() {
   const { category, slug } = useParams();
@@ -146,7 +164,6 @@ function Post() {
           setError(null);
         }
       } catch (err) {
-        console.log(err)
         if (isActive) {
           setError("We couldn't load this post right now.");
           setPost(null);

@@ -173,7 +173,13 @@ function Home() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <MKButton type="submit" variant="gradient" color="dark" fullWidth size="large">
+                      <MKButton
+                        type="submit"
+                        variant="gradient"
+                        color="dark"
+                        fullWidth
+                        size="large"
+                      >
                         Continue
                       </MKButton>
                     </Grid>
@@ -192,10 +198,15 @@ function Home() {
         <Container>
           <Grid container spacing={20} alignItems="center" px={10}>
             <Grid item xs={12} md={6} px={6}>
-              <MKTypography variant="h2" color="dark" mb={2} sx={({ typography: { size }, breakpoints }) => ({
-                fontSize: "3rem",
-                [breakpoints.down("md")]: { fontSize: size["xl"] }
-              })}>
+              <MKTypography
+                variant="h2"
+                color="dark"
+                mb={2}
+                sx={({ typography: { size }, breakpoints }) => ({
+                  fontSize: "3rem",
+                  [breakpoints.down("md")]: { fontSize: size["xl"] },
+                })}
+              >
                 In the coming months, we are launching a new approach to learning.
               </MKTypography>
               <MKTypography variant="body2" color="text" mb={3}>
@@ -203,7 +214,12 @@ function Home() {
                 will be a part of our inner circle community who gets priority access and
                 information.
               </MKTypography>
-              <MKButton variant="gradient" color="success" size="large" onClick={() => setOpenInnerCircle(true)}>
+              <MKButton
+                variant="gradient"
+                color="success"
+                size="large"
+                onClick={() => setOpenInnerCircle(true)}
+              >
                 Get early access
               </MKButton>
             </Grid>
@@ -225,7 +241,8 @@ function Home() {
                       Personalized learning blueprints
                     </MKTypography>
                     <MKTypography variant="body2" color="text">
-                      Dynamic pathways tailor every lesson, exercise, and assessment to each learner so adoption is fast and engagement stays high.
+                      Dynamic pathways tailor every lesson, exercise, and assessment to each learner
+                      so adoption is fast and engagement stays high.
                     </MKTypography>
                   </MKBox>
                 </MKBox>
@@ -236,7 +253,8 @@ function Home() {
                       Always-on coaching signals
                     </MKTypography>
                     <MKTypography variant="body2" color="text">
-                      Automated nudges and feedback loops keep your teams on pace, highlighting where to lean in before blockers surface.
+                      Automated nudges and feedback loops keep your teams on pace, highlighting
+                      where to lean in before blockers surface.
                     </MKTypography>
                   </MKBox>
                 </MKBox>
@@ -247,7 +265,8 @@ function Home() {
                       Proof-in-hand reporting
                     </MKTypography>
                     <MKTypography variant="body2" color="text">
-                      Clear dashboards translate activity into outcomes you can show stakeholders, making every learning investment measurable.
+                      Clear dashboards translate activity into outcomes you can show stakeholders,
+                      making every learning investment measurable.
                     </MKTypography>
                   </MKBox>
                 </MKBox>
@@ -264,7 +283,9 @@ function Home() {
                 About us
               </MKTypography>
               <MKTypography variant="body1" color="text" mb={2.5}>
-                We’re a team of researchers and engineers with firsthand insight into the challenges of learning who want to build an impactful solution that makes a meaningful impact for learners.
+                We’re a team of researchers and engineers with firsthand insight into the challenges
+                of learning who want to build an impactful solution that makes a meaningful impact
+                for learners.
               </MKTypography>
             </Grid>
             <Grid item xs={12} md={5}>
@@ -286,9 +307,15 @@ function Home() {
       <MKBox pt={6} px={1} mt={3}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
-      <Dialog open={openInnerCircle} onClose={() => setOpenInnerCircle(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openInnerCircle}
+        onClose={() => setOpenInnerCircle(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Get early access</DialogTitle>
-        <MKBox component="form"
+        <MKBox
+          component="form"
           action={googleFormConfig.actionUrl}
           method="POST"
           target="_blank"
@@ -296,7 +323,8 @@ function Home() {
         >
           <DialogContent dividers>
             <MKTypography variant="body2" color="text" mb={3}>
-              Join our inner circle for first looks, private demos, and fast-lane onboarding when we launch.
+              Join our inner circle for first looks, private demos, and fast-lane onboarding when we
+              launch.
             </MKTypography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -423,7 +451,9 @@ function Home() {
                       <FormControlLabel
                         key={option}
                         value={option}
-                        checked={() => { formData.excitementScale === option }}
+                        checked={() => {
+                          formData.excitementScale === option;
+                        }}
                         control={<Radio color="success" size="small" />}
                         label={
                           <MKTypography variant="body2" color="text">
