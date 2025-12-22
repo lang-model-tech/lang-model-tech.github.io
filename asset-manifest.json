@@ -1,13 +1,19 @@
 {
   "files": {
-    "main.js": "/static/js/main.9308bd2e.js",
+    "main.js": "/static/js/main.a9ec7309.js",
+    "static/media/hero-image.jpg": "/static/media/hero-image.27db8935e2f8713b2784.jpg",
     "static/media/our_technology.png": "/static/media/our_technology.04375ef8cfbe24c0ff0e.png",
+    "static/media/city-profile.jpg": "/static/media/city-profile.4d64bba97c3d1757379e.jpg",
+    "static/media/blog-9-4.jpg": "/static/media/blog-9-4.de736e0b751f453415a5.jpg",
     "static/media/illustration-reset.jpg": "/static/media/illustration-reset.c5f36c0c2262b9ad6165.jpg",
-    "static/media/bg-about-us.jpg": "/static/media/bg-about-us.cf9a123e2a3d371d53da.jpg",
+    "static/media/blog2.jpg": "/static/media/blog2.aba7a3cb94805e9557d1.jpg",
+    "static/media/testimonial-6-2.jpg": "/static/media/testimonial-6-2.21f2048f0b89919090f0.jpg",
+    "static/media/testimonial-6-3.jpg": "/static/media/testimonial-6-3.d35bef0d65354442d063.jpg",
+    "static/media/bruce-mars.jpg": "/static/media/bruce-mars.8a606c4a6dab54c9ceff.jpg",
     "index.html": "/index.html",
-    "main.9308bd2e.js.map": "/static/js/main.9308bd2e.js.map"
+    "main.a9ec7309.js.map": "/static/js/main.a9ec7309.js.map"
   },
   "entrypoints": [
-    "static/js/main.9308bd2e.js"
+    "static/js/main.a9ec7309.js"
   ]
 }
