@@ -1,56 +1,66 @@
-# SWACTech Landing
+# c2 Landing Page
 
-Minimal waitlist-focused landing built on React and Material Kit 2. Includes a hero with join-waitlist CTA, blog link, and simplified navigation.
+Minimal product landing for `c2`, an AI career coach by LMTech with the tagline
+`Job hunting made simple`.
+
+The site is built with React, React Router, MUI, and the remaining Material Kit theme/component
+primitives. It currently promotes c2, exposes placeholder routes for future Plans and Blog pages,
+and uses a shared layout for consistent navigation, footer, social links, and early-access CTA.
 
 ## Getting Started
 
 - Install dependencies: `npm install`
-- Run locally: `npm start` (http://localhost:3000)
+- Run locally: `npm start`
 - Build for production: `npm run build`
+- Lint source files: `npm run lint`
+
+## Current Routes
+
+- `/` - c2 product landing page
+- `/plans` - placeholder page for future pricing/access plans
+- `/blog` - placeholder page for future c2 blog content
+- Any unknown React route redirects to `/`
+
+Static route shims are included under `public/plans/`, `public/blog/`, and `public/404.html` so
+clean URLs work more reliably on static hosts.
 
 ## Project Structure
 
-- `src/App.js` — routes wiring
-- `src/routes.js` — navbar routes (Home, Blog, GitHub)
-- `src/pages/LandingPages/Home` — landing layout, hero + waitlist sections
-- `src/pages/LandingPages/Blog` — blog list + post pages; metadata is read from markdown frontmatter
-- `public/posts/**` — markdown posts with YAML frontmatter (title, category, slug, tagline, author, date, image key)
-- `src/examples` / `src/components` — shared UI primitives from Material Kit
+- `src/App.js` - route wiring for `/`, `/plans`, and `/blog`
+- `src/components/C2Layout` - shared header, active nav state, footer, product social links, and Start free modal
+- `src/pages/LandingPages/Home` - main c2 landing page sections and product mockups
+- `src/pages/Plans` - placeholder Plans route
+- `src/pages/Blog` - placeholder Blog route
+- `src/assets/images/c2-logo.svg` - React-imported c2 logo
+- `public/c2-logo.svg` - public favicon/manifest logo copy
+- `src/googleFormConfig.js` - Google Form target and field IDs for the early-access modal
 
 ## Content & CTAs
 
-- Hero primary CTA: `Join waitlist` (`/#waitlist`)
-- Secondary CTA: `Read the blog` (`/blog`)
-- Waitlist forms post to a Google Form; configure `src/googleFormConfig.js` with your `entry.*` IDs before launch.
+- Primary CTA: `Start free`
+- CTA behavior: opens the shared early-access modal
+- Form submission: posts to the configured Google Form in `src/googleFormConfig.js`
+- Company ownership: footer copyright remains `LMTech`
+- Social links: LinkedIn and X placeholders represent c2 product accounts, not LMTech corporate accounts
 
-## Blog content
+## Logo
 
-- Add/edit posts in `public/posts/{category}/{slug}.md` with frontmatter:
-  ```yaml
-  ---
-  title: "Post title"
-  category: "Research"
-  categorySlug: "research"
-  slug: "my-slug"
-  tagline: "One-line summary"
-  author: "Name"
-  date: "Jan 1, 2025"
-  image: "blog2" # key from image map in postData.js
-  ---
-  ```
-- The UI fetches markdown at runtime; images are mapped via keys in `src/pages/LandingPages/Blog/postData.js`.
+The c2 logo is stored in two places:
+
+- `src/assets/images/c2-logo.svg` for app imports
+- `public/c2-logo.svg` for favicon and manifest references
+
+When replacing the logo, keep both files in sync unless the app and browser icon should intentionally differ.
 
 ## Styling Notes
 
-- Uses Material Kit theme tokens (`assets/theme`) and MUI `sx` for overrides.
-- Hero background image: `src/assets/images/hero-image.jpg` with gradient overlay.
+- Uses MUI `sx` props and existing Material Kit components under `src/components`
+- Shared header/footer styling lives in `src/components/C2Layout/index.js`
+- The landing page is intentionally minimal and white, with dark product-preview panels inspired by the NotebookLM reference
+- Active nav items are styled in the shared layout using the current React Router location
 
 ## Deployment
 
-The repo includes `npm run build` for static output. Deploy the `build` directory to your hosting of choice (e.g., GitHub Pages via `npm run deploy` if configured).
+Run `npm run build` and deploy the generated `build` directory to the static host.
 
-## Maintenance
-
-- Unused legacy section components remain under `src/pages/LandingPages/Home/sections/` for future reuse.
-- Update nav items in `src/routes.js` and footer links in `src/footer.routes.js` as content grows.
-- Keep the image map in `src/pages/LandingPages/Blog/postData.js` in sync with frontmatter `image` keys.
+The app currently assumes it is hosted at `/`, based on the `homepage` field in `package.json`.

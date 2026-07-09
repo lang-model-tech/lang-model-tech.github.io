@@ -1,521 +1,591 @@
-// @mui material components
-import { useState } from "react";
+import PropTypes from "prop-types";
+
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import googleFormConfig from "googleFormConfig";
-import aboutImage from "assets/images/bg-about-us.jpg";
+import Stack from "@mui/material/Stack";
 
-// Material Kit 2 React components
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import RecordVoiceOverOutlinedIcon from "@mui/icons-material/RecordVoiceOverOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
+import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+
+import C2Layout from "components/C2Layout";
 import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
-import MKInput from "components/MKInput";
+import MKTypography from "components/MKTypography";
 
-// Material Kit 2 React examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultFooter from "examples/Footers/DefaultFooter";
+const productBlue = "#27c3f3";
+const productGreen = "#55d98b";
+const ink = "#111827";
+const muted = "#667085";
 
-// Routes
-import routes from "routes";
-import footerRoutes from "footer.routes";
+const featureRows = [
+  {
+    icon: UploadFileOutlinedIcon,
+    title: "Bring your career material together",
+    body: "Upload your resume, target roles, notes, and job links so c2 can understand the career story you are trying to tell.",
+    mockup: "profile",
+  },
+  {
+    icon: AutoFixHighOutlinedIcon,
+    title: "Get focused job-search guidance",
+    body: "Turn scattered next steps into a simple plan for resumes, applications, networking, and interview preparation.",
+    mockup: "coach",
+  },
+  {
+    icon: FactCheckOutlinedIcon,
+    title: "Improve every application",
+    body: "Compare your experience with the role, spot missing signals, and shape stronger application material before you submit.",
+    mockup: "match",
+  },
+  {
+    icon: RecordVoiceOverOutlinedIcon,
+    title: "Practice before it counts",
+    body: "Prepare concise answers, rehearse likely questions, and keep your examples ready for recruiter screens and interviews.",
+    mockup: "interview",
+  },
+];
 
-// Images
-import bgImage from "assets/images/hero-image.jpg";
-function Home() {
-  const [openInnerCircle, setOpenInnerCircle] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    // organization: "",
-    primaryInterest: "",
-    other: "",
-    referredBy: [],
-    excitementScale: "",
-    additionalComments: "",
-    timezone: "",
-  });
+const useCases = [
+  {
+    icon: ArticleOutlinedIcon,
+    title: "Sharpen your resume",
+    body: "Find weak bullets, surface stronger evidence, and tailor your story to each role without starting from a blank page.",
+    note: "Make your experience easier to understand.",
+  },
+  {
+    icon: WorkOutlineOutlinedIcon,
+    title: "Track the hunt",
+    body: "Keep roles, deadlines, contacts, and follow-ups in one place so no opportunity quietly slips away.",
+    note: "Stay organized from search to offer.",
+  },
+  {
+    icon: GroupsOutlinedIcon,
+    title: "Interview with confidence",
+    body: "Practice role-specific questions and turn your background into clear stories recruiters can remember.",
+    note: "Show up prepared, not over-scripted.",
+  },
+];
 
-  const handleFieldChange = (field) => (event) => {
-    setFormData((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+const faqs = [
+  {
+    question: "What is c2?",
+    answer:
+      "c2 is an AI career coach from LMTech that helps job seekers organize their search, improve application material, and prepare for interviews.",
+  },
+  {
+    question: "Is c2 only for people actively applying?",
+    answer:
+      "No. It is useful when you are exploring roles, refreshing your resume, preparing for a career move, or managing an active job search.",
+  },
+  {
+    question: "Does c2 write applications for me?",
+    answer:
+      "c2 helps you clarify, tailor, and strengthen your own material. The goal is to make your experience easier to present, not replace your judgment.",
+  },
+  {
+    question: "Can I use c2 before the full product is available?",
+    answer:
+      "The Start free button opens early access. We will use those requests to invite people as c2 becomes available.",
+  },
+  {
+    question: "Who makes c2?",
+    answer:
+      "c2 is made by LMTech, short for Language Model Technology, a company building practical language-model products.",
+  },
+];
 
-  const handleCheckboxChange = (field, option) => (event) => {
-    const checked = event.target.checked;
-    setFormData((prev) => {
-      const current = Array.isArray(prev[field]) ? prev[field] : [];
-      const next = checked ? [...current, option] : current.filter((item) => item !== option);
-      return { ...prev, [field]: next };
-    });
-  };
+function ProductPreview({ type }) {
+  if (type === "profile") {
+    return (
+      <MKBox sx={previewShellSx}>
+        <MKBox sx={softGlowSx} />
+        <MKBox sx={{ position: "relative", width: "78%", maxWidth: 420 }}>
+          <MKBox sx={profileCardSx}>
+            <MKTypography variant="caption" color="white" opacity={0.58}>
+              Career profile
+            </MKTypography>
+            <MKTypography variant="h4" color="white" mt={1} mb={1}>
+              Product Manager
+            </MKTypography>
+            <MKBox display="flex" gap={1} flexWrap="wrap">
+              {["Resume", "Targets", "Notes"].map((item) => (
+                <MKBox key={item} sx={pillSx}>
+                  {item}
+                </MKBox>
+              ))}
+            </MKBox>
+          </MKBox>
+        </MKBox>
+      </MKBox>
+    );
+  }
+
+  if (type === "coach") {
+    return (
+      <MKBox sx={previewShellSx}>
+        <MKBox sx={softGlowSx} />
+        <MKBox sx={{ position: "relative", width: "82%", maxWidth: 430 }}>
+          <MKBox sx={toolbarSx}>
+            {["Resume plan", "Job matches", "Interview prep"].map((item) => (
+              <MKBox key={item} sx={outlinePillSx}>
+                {item}
+              </MKBox>
+            ))}
+          </MKBox>
+          <MKBox sx={messageSx}>
+            <AutoFixHighOutlinedIcon sx={{ color: productGreen, mr: 1 }} />
+            <MKTypography variant="button" color="white" fontWeight="regular">
+              Tighten your summary around measurable customer outcomes.
+            </MKTypography>
+          </MKBox>
+        </MKBox>
+      </MKBox>
+    );
+  }
+
+  if (type === "match") {
+    return (
+      <MKBox sx={previewShellSx}>
+        <MKBox sx={softGlowSx} />
+        <MKBox sx={scoreCardSx}>
+          <MKTypography variant="caption" color="white" opacity={0.58}>
+            Role fit
+          </MKTypography>
+          <MKTypography variant="h2" color="white" mt={1}>
+            82%
+          </MKTypography>
+          <MKBox sx={progressTrackSx}>
+            <MKBox sx={progressFillSx} />
+          </MKBox>
+          <MKTypography variant="caption" color="white" opacity={0.72}>
+            4 resume signals to strengthen
+          </MKTypography>
+        </MKBox>
+      </MKBox>
+    );
+  }
 
   return (
-    <>
-      <DefaultNavbar
-        routes={routes}
-        action={{
-          type: "internal",
-          route: "/#waitlist",
-          label: "Join waitlist",
-          color: "success",
-        }}
-        transparent
-        light
-      />
-      <MKBox
-        minHeight="85vh"
-        width="100%"
-        sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.dark.main, 0.78),
-              rgba(gradients.dark.state, 0.68)
-            )}, url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container sx={{ py: { xs: 6, md: 0 } }}>
-          <Grid container spacing={6} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <MKTypography
-                variant="h1"
-                color="white"
-                sx={({ breakpoints, typography: { size } }) => ({
-                  [breakpoints.down("md")]: {
-                    fontSize: size["3xl"],
-                  },
-                })}
-                mb={2}
-              >
-                All your learning.
-                <br />
-                One adaptive platform.
-              </MKTypography>
-              <MKTypography variant="body1" color="white" opacity={0.82} mb={3}>
-                AI-personalized study plans, coaching nudges, and progress tracking built for
-                students and teams who want faster, deeper results. Real-time insights and active
-                feedback keep tutors and learners aligned.
-              </MKTypography>
-              <MKBox display="flex" gap={2} flexWrap="wrap">
-                <MKButton
-                  variant="contained"
-                  color="success"
-                  size="large"
-                  component="a"
-                  href="#waitlist"
-                >
-                  Join waitlist
-                </MKButton>
-                <MKButton variant="outlined" color="white" size="large" component="a" href="/blog">
-                  Read the blog
-                </MKButton>
-              </MKBox>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card
-                sx={{
-                  p: { xs: 3, md: 4 },
-                  backgroundColor: ({ palette: { white } }) => white.main,
-                  boxShadow: ({ boxShadows: { xxl } }) => xxl,
-                  borderRadius: "xl",
-                  maxWidth: 520,
-                  ml: { md: "auto" },
-                }}
-              >
-                <MKTypography variant="h5" color="dark" mb={1}>
-                  See what we are building
-                </MKTypography>
-                <MKTypography variant="body2" color="text" mb={3}>
-                  Join the early waitlist for pilots, research drops, and beta invites.
-                </MKTypography>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setOpenInnerCircle(true);
-                  }}
-                  style={{ width: "100%" }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <MKInput
-                        required
-                        value={formData.fullName}
-                        onChange={handleFieldChange("fullName")}
-                        type="text"
-                        label="Full name"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MKInput
-                        required
-                        value={formData.email}
-                        onChange={handleFieldChange("email")}
-                        type="email"
-                        label="Work email"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MKButton
-                        type="submit"
-                        variant="gradient"
-                        color="dark"
-                        fullWidth
-                        size="large"
-                      >
-                        Continue
-                      </MKButton>
-                    </Grid>
-                  </Grid>
-                </form>
-                <Divider sx={{ my: 3 }} />
-                <MKTypography variant="caption" color="text">
-                  We share occasional updates only. Unsubscribe anytime.
-                </MKTypography>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </MKBox>
-      <MKBox component="section" id={"waitlist"} bgColor="white" py={{ xs: 6, md: 8 }} px={1}>
-        <Container>
-          <Grid container spacing={20} alignItems="center" px={10}>
-            <Grid item xs={12} md={6} px={6}>
-              <MKTypography
-                variant="h2"
-                color="dark"
-                mb={2}
-                sx={({ typography: { size }, breakpoints }) => ({
-                  fontSize: "3rem",
-                  [breakpoints.down("md")]: { fontSize: size["xl"] },
-                })}
-              >
-                In the coming months, we are launching a new approach to learning.
-              </MKTypography>
-              <MKTypography variant="body2" color="text" mb={3}>
-                If you want early access to this latest innovation, register your interest and you
-                will be a part of our inner circle community who gets priority access and
-                information.
-              </MKTypography>
-              <MKButton
-                variant="gradient"
-                color="success"
-                size="large"
-                onClick={() => setOpenInnerCircle(true)}
-              >
-                Get early access
-              </MKButton>
-            </Grid>
-            <Grid item xs={12} md={6} px={6}>
-              <MKBox
-                component="ul"
-                sx={{
-                  listStyle: "none",
-                  p: 0,
-                  m: 0,
-                  display: "grid",
-                  gap: 2.5,
-                }}
-              >
-                <MKBox component="li" display="flex" gap={2} alignItems="flex-start">
-                  <ArrowCircleRightRoundedIcon color="success" sx={{ mt: 0.5 }} />
-                  <MKBox>
-                    <MKTypography variant="h5" color="dark" mb={0.5}>
-                      Personalized learning blueprints
-                    </MKTypography>
-                    <MKTypography variant="body2" color="text">
-                      Dynamic pathways tailor every lesson, exercise, and assessment to each learner
-                      so adoption is fast and engagement stays high.
-                    </MKTypography>
-                  </MKBox>
-                </MKBox>
-                <MKBox component="li" display="flex" gap={2} alignItems="flex-start">
-                  <ArrowCircleRightRoundedIcon color="success" sx={{ mt: 0.5 }} />
-                  <MKBox>
-                    <MKTypography variant="h5" color="dark" mb={0.5}>
-                      Always-on coaching signals
-                    </MKTypography>
-                    <MKTypography variant="body2" color="text">
-                      Automated nudges and feedback loops keep your teams on pace, highlighting
-                      where to lean in before blockers surface.
-                    </MKTypography>
-                  </MKBox>
-                </MKBox>
-                <MKBox component="li" display="flex" gap={2} alignItems="flex-start">
-                  <ArrowCircleRightRoundedIcon color="success" sx={{ mt: 0.5 }} />
-                  <MKBox>
-                    <MKTypography variant="h5" color="dark" mb={0.5}>
-                      Proof-in-hand reporting
-                    </MKTypography>
-                    <MKTypography variant="body2" color="text">
-                      Clear dashboards translate activity into outcomes you can show stakeholders,
-                      making every learning investment measurable.
-                    </MKTypography>
-                  </MKBox>
-                </MKBox>
-              </MKBox>
-            </Grid>
-          </Grid>
-        </Container>
-      </MKBox>
-      <MKBox component="section" bgColor="white" py={{ xs: 8, md: 10 }} px={1}>
-        <Container>
-          <Grid container spacing={5} alignItems="center" px={10}>
-            <Grid item xs={12} md={7}>
-              <MKTypography variant="h3" color="dark" mb={2}>
-                About us
-              </MKTypography>
-              <MKTypography variant="body1" color="text" mb={2.5}>
-                We’re a team of researchers and engineers with firsthand insight into the challenges
-                of learning who want to build an impactful solution that makes a meaningful impact
-                for learners.
-              </MKTypography>
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <MKBox
-                component="img"
-                src={aboutImage}
-                alt="Learners collaborating"
-                width="100%"
-                borderRadius="xl"
-                sx={{
-                  objectFit: "cover",
-                  boxShadow: ({ boxShadows: { xxl } }) => xxl,
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </MKBox>
-      <MKBox pt={6} px={1} mt={3}>
-        <DefaultFooter content={footerRoutes} />
-      </MKBox>
-      <Dialog
-        open={openInnerCircle}
-        onClose={() => setOpenInnerCircle(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>Get early access</DialogTitle>
-        <MKBox
-          component="form"
-          action={googleFormConfig.actionUrl}
-          method="POST"
-          target="_blank"
-          onSubmit={() => setOpenInnerCircle(false)}
-        >
-          <DialogContent dividers>
-            <MKTypography variant="body2" color="text" mb={3}>
-              Join our inner circle for first looks, private demos, and fast-lane onboarding when we
-              launch.
-            </MKTypography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <MKInput
-                  required
-                  name={googleFormConfig.fields.waitlistCard.fullName}
-                  type="text"
-                  label="Full name"
-                  fullWidth
-                  value={formData.fullName}
-                  onChange={handleFieldChange("fullName")}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <MKInput
-                  required
-                  name={googleFormConfig.fields.waitlistCard.email}
-                  type="email"
-                  label="Email"
-                  fullWidth
-                  value={formData.email}
-                  onChange={handleFieldChange("email")}
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
-                <MKInput
-                  name={googleFormConfig.fields.waitlistCard.organization}
-                  type="text"
-                  label="Company or school"
-                  fullWidth
-                  value={formData.organization}
-                  onChange={handleFieldChange("organization")}
-                />
-              </Grid> */}
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth>
-                  <MKTypography variant="body2" color="dark" mb={1} display="block">
-                    Primary interest
-                  </MKTypography>
-                  <RadioGroup
-                    name={googleFormConfig.fields.waitlistCard.primaryInterest}
-                    value={formData.primaryInterest || ""}
-                    onChange={handleFieldChange("primaryInterest")}
-                    sx={{
-                      "& .MuiFormControlLabel-root": { alignItems: "flex-start", mb: 0.5 },
-                    }}
-                  >
-                    {googleFormConfig.fields.waitlistCard.primaryInterestOptions?.map((option) => (
-                      <FormControlLabel
-                        key={option}
-                        value={option}
-                        checked={formData.primaryInterest === option}
-                        control={<Radio color="success" size="small" />}
-                        label={
-                          <MKTypography variant="body2" color="text">
-                            {option}
-                          </MKTypography>
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <MKInput
-                  name={googleFormConfig.fields.waitlistCard.other}
-                  type="text"
-                  label="If other, please specify"
-                  fullWidth
-                  value={formData.other}
-                  onChange={handleFieldChange("other")}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth>
-                  <MKTypography variant="body2" color="dark" mb={1} display="block">
-                    How did you hear about us?
-                  </MKTypography>
-                  <MKBox
-                    component="div"
-                    sx={{
-                      display: "grid",
-                      gap: 0.5,
-                    }}
-                  >
-                    {googleFormConfig.fields.waitlistCard.referredByOptions?.map((option) => (
-                      <FormControlLabel
-                        key={option}
-                        control={
-                          <Checkbox
-                            color="success"
-                            size="small"
-                            name={googleFormConfig.fields.waitlistCard.referredBy}
-                            value={option}
-                            checked={formData.referredBy.includes(option)}
-                            onChange={handleCheckboxChange("referredBy", option)}
-                          />
-                        }
-                        label={
-                          <MKTypography variant="body2" color="text">
-                            {option}
-                          </MKTypography>
-                        }
-                      />
-                    ))}
-                  </MKBox>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth>
-                  <MKTypography variant="body2" color="dark" mb={1} display="block">
-                    How excited are you to try this? (1-5)
-                  </MKTypography>
-                  <RadioGroup
-                    row
-                    name={googleFormConfig.fields.waitlistCard.excitementScale}
-                    value={formData.excitementScale || ""}
-                    onChange={handleFieldChange("excitementScale")}
-                    sx={{
-                      "& .MuiFormControlLabel-root": { mr: 2 },
-                    }}
-                  >
-                    {googleFormConfig.fields.waitlistCard.excitementScaleOptions?.map((option) => (
-                      <FormControlLabel
-                        key={option}
-                        value={option}
-                        checked={() => {
-                          formData.excitementScale === option;
-                        }}
-                        control={<Radio color="success" size="small" />}
-                        label={
-                          <MKTypography variant="body2" color="text">
-                            {option}
-                          </MKTypography>
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" fullWidth>
-                  <MKTypography variant="body2" color="dark" mb={1} display="block">
-                    Your timezone
-                  </MKTypography>
-                  <Select
-                    name={googleFormConfig.fields.waitlistCard.timezone}
-                    value={formData.timezone || ""}
-                    onChange={handleFieldChange("timezone")}
-                    displayEmpty
-                    fullWidth
-                    size="small"
-                    sx={{ mt: 0.5 }}
-                  >
-                    <MenuItem value="" disabled>
-                      <MKTypography variant="body2" color="text">
-                        Select a timezone
-                      </MKTypography>
-                    </MenuItem>
-                    {googleFormConfig.fields.waitlistCard.timezoneOptions?.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <MKInput
-                  name={googleFormConfig.fields.waitlistCard.additionalComments}
-                  type="text"
-                  label="Anything else we should know?"
-                  fullWidth
-                  value={formData.additionalComments}
-                  onChange={handleFieldChange("additionalComments")}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 2 }}>
-            <MKButton variant="text" color="dark" onClick={() => setOpenInnerCircle(false)}>
-              Cancel
-            </MKButton>
-            <MKButton type="submit" variant="gradient" color="success">
-              Request early access
-            </MKButton>
-          </DialogActions>
+    <MKBox sx={previewShellSx}>
+      <MKBox sx={softGlowSx} />
+      <MKBox sx={interviewCardSx}>
+        <RecordVoiceOverOutlinedIcon sx={{ color: productBlue, fontSize: 34 }} />
+        <MKBox>
+          <MKTypography variant="h5" color="white">
+            Interview practice
+          </MKTypography>
+          <MKTypography variant="caption" color="white" opacity={0.64}>
+            Tell me about a project you led end to end.
+          </MKTypography>
         </MKBox>
-      </Dialog>
-    </>
+      </MKBox>
+    </MKBox>
   );
 }
+
+function FeatureRow({ feature }) {
+  const Icon = feature.icon;
+
+  return (
+    <Grid container spacing={{ xs: 4, md: 8 }} alignItems="center" sx={{ mb: { xs: 8, md: 10 } }}>
+      <Grid item xs={12} md={4}>
+        <Stack direction={{ xs: "row", md: "column" }} spacing={2} alignItems="flex-start">
+          <Icon sx={{ color: ink, fontSize: 28 }} />
+          <MKBox>
+            <MKTypography variant="h5" color="dark" mb={1}>
+              {feature.title}
+            </MKTypography>
+            <MKTypography variant="body2" sx={{ color: muted, lineHeight: 1.75 }}>
+              {feature.body}
+            </MKTypography>
+          </MKBox>
+        </Stack>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <ProductPreview type={feature.mockup} />
+      </Grid>
+    </Grid>
+  );
+}
+
+ProductPreview.propTypes = {
+  type: PropTypes.oneOf(["profile", "coach", "match", "interview"]).isRequired,
+};
+
+FeatureRow.propTypes = {
+  feature: PropTypes.shape({
+    body: PropTypes.string.isRequired,
+    icon: PropTypes.elementType.isRequired,
+    mockup: PropTypes.oneOf(["profile", "coach", "match", "interview"]).isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+function Home() {
+  return (
+    <C2Layout>
+      {({ openEarlyAccess }) => (
+        <MKBox component="main">
+          <MKBox component="section" sx={heroSx}>
+            <Container>
+              <MKTypography variant="h1" color="dark" textAlign="center" sx={heroTitleSx}>
+                Job hunting made{" "}
+                <MKBox component="span" sx={gradientTextSx}>
+                  simple
+                </MKBox>
+              </MKTypography>
+              <MKTypography variant="body1" textAlign="center" sx={heroCopySx}>
+                c2 is your AI career coach for resumes, applications, interview prep, and the
+                everyday work of finding the next role.
+              </MKTypography>
+              <MKBox display="flex" justifyContent="center" mt={4}>
+                <MKButton
+                  variant="contained"
+                  color="dark"
+                  size="large"
+                  onClick={openEarlyAccess}
+                  sx={heroButtonSx}
+                >
+                  Start free
+                </MKButton>
+              </MKBox>
+            </Container>
+          </MKBox>
+
+          <MKBox component="section" id="overview" py={{ xs: 7, md: 9 }}>
+            <Container sx={{ maxWidth: "980px !important" }}>
+              <MKTypography variant="h3" color="dark" textAlign="center" mb={{ xs: 6, md: 8 }}>
+                Your AI-powered career coach
+              </MKTypography>
+              {featureRows.map((feature) => (
+                <FeatureRow key={feature.title} feature={feature} />
+              ))}
+            </Container>
+          </MKBox>
+
+          <MKBox component="section" py={{ xs: 6, md: 8 }}>
+            <Container sx={{ maxWidth: "980px !important" }}>
+              <MKTypography variant="h3" color="dark" textAlign="center" mb={{ xs: 5, md: 7 }}>
+                How people use c2
+              </MKTypography>
+              <Grid container spacing={{ xs: 4, md: 6 }}>
+                {useCases.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <Grid item xs={12} md={4} key={item.title}>
+                      <Icon sx={{ color: "#6d7cff", fontSize: 30, mb: 2 }} />
+                      <MKTypography variant="h6" color="dark" mb={1}>
+                        {item.title}
+                      </MKTypography>
+                      <MKTypography variant="body2" sx={{ color: muted, lineHeight: 1.72 }} mb={2}>
+                        {item.body}
+                      </MKTypography>
+                      <MKTypography
+                        variant="caption"
+                        sx={{ color: "#475467", fontStyle: "italic" }}
+                      >
+                        {item.note}
+                      </MKTypography>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Container>
+          </MKBox>
+
+          <MKBox component="section" sx={privacySectionSx}>
+            <Container sx={{ maxWidth: "760px !important" }}>
+              <MKTypography variant="h3" color="dark" textAlign="center" mb={2}>
+                Your career data should stay yours.
+              </MKTypography>
+              <MKTypography
+                variant="body2"
+                textAlign="center"
+                sx={{ color: muted, lineHeight: 1.75 }}
+              >
+                Resumes, target roles, notes, and interview answers can be deeply personal. c2 is
+                designed around useful guidance, clear user control, and practical privacy defaults.
+              </MKTypography>
+              <MKBox sx={privacyOrbitSx} aria-hidden="true">
+                <MKBox sx={orbitRingSx} />
+                <MKBox sx={orbitRingSmallSx} />
+                <MKBox sx={privacyCenterSx}>
+                  <LockOutlinedIcon sx={{ color: "#667085", fontSize: 32 }} />
+                </MKBox>
+                <ShieldOutlinedIcon sx={privacyIconOneSx} />
+                <CheckCircleOutlineOutlinedIcon sx={privacyIconTwoSx} />
+                <ArticleOutlinedIcon sx={privacyIconThreeSx} />
+              </MKBox>
+            </Container>
+          </MKBox>
+
+          <MKBox component="section" id="faq" py={{ xs: 7, md: 9 }}>
+            <Container sx={{ maxWidth: "920px !important" }}>
+              <MKTypography variant="h3" color="dark" mb={1}>
+                Want to learn more?
+              </MKTypography>
+              <MKTypography variant="body2" sx={{ color: muted }} mb={4}>
+                Here are some answers to common questions.
+              </MKTypography>
+              {faqs.map((item) => (
+                <Accordion key={item.question} disableGutters elevation={0} square sx={faqItemSx}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "#4763ff" }} />}>
+                    <MKTypography variant="button" color="text" fontWeight="regular">
+                      {item.question}
+                    </MKTypography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <MKTypography variant="body2" sx={{ color: muted, lineHeight: 1.75 }}>
+                      {item.answer}
+                    </MKTypography>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </Container>
+          </MKBox>
+        </MKBox>
+      )}
+    </C2Layout>
+  );
+}
+
+const heroSx = {
+  pt: { xs: 7, md: 10 },
+  pb: { xs: 8, md: 10 },
+};
+
+const heroTitleSx = {
+  fontSize: { xs: "3rem", sm: "4.25rem", md: "5.5rem" },
+  lineHeight: 0.96,
+  fontWeight: 700,
+  letterSpacing: 0,
+  maxWidth: 960,
+  mx: "auto",
+};
+
+const gradientTextSx = {
+  background: `linear-gradient(90deg, ${productGreen}, ${productBlue})`,
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+};
+
+const heroCopySx = {
+  color: muted,
+  maxWidth: 620,
+  mx: "auto",
+  mt: 3,
+  lineHeight: 1.7,
+};
+
+const heroButtonSx = {
+  borderRadius: "8px",
+  boxShadow: "none",
+  minWidth: 134,
+  py: 1.25,
+  textTransform: "none",
+  "&:hover": {
+    boxShadow: "0 10px 26px rgba(17, 24, 39, 0.18)",
+  },
+};
+
+const previewShellSx = {
+  position: "relative",
+  overflow: "hidden",
+  minHeight: { xs: 230, sm: 280, md: 320 },
+  borderRadius: "10px",
+  background:
+    "radial-gradient(circle at 18% 35%, rgba(85,217,139,0.22), transparent 28%), radial-gradient(circle at 82% 32%, rgba(249,115,22,0.18), transparent 27%), #050506",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "0 18px 45px rgba(15, 23, 42, 0.16)",
+};
+
+const softGlowSx = {
+  position: "absolute",
+  inset: 0,
+  background:
+    "linear-gradient(120deg, rgba(39,195,243,0.08), transparent 38%, rgba(85,217,139,0.08))",
+};
+
+const profileCardSx = {
+  border: "1px solid rgba(255,255,255,0.16)",
+  borderRadius: "14px",
+  p: 3,
+  backgroundColor: "rgba(255,255,255,0.08)",
+  backdropFilter: "blur(16px)",
+};
+
+const pillSx = {
+  color: "white",
+  fontSize: 12,
+  lineHeight: 1,
+  px: 1.25,
+  py: 0.8,
+  borderRadius: "999px",
+  border: "1px solid rgba(255,255,255,0.16)",
+  backgroundColor: "rgba(255,255,255,0.08)",
+};
+
+const toolbarSx = {
+  display: "grid",
+  gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" },
+  gap: 1,
+  mb: 2,
+};
+
+const outlinePillSx = {
+  color: "white",
+  fontSize: 12,
+  textAlign: "center",
+  py: 1,
+  px: 1.25,
+  borderRadius: "999px",
+  border: "1px solid rgba(255,255,255,0.18)",
+};
+
+const messageSx = {
+  display: "flex",
+  alignItems: "center",
+  p: 2,
+  borderRadius: "10px",
+  backgroundColor: "rgba(255,255,255,0.08)",
+  border: "1px solid rgba(255,255,255,0.12)",
+};
+
+const scoreCardSx = {
+  position: "relative",
+  width: 220,
+  p: 3,
+  borderRadius: "14px",
+  backgroundColor: "rgba(255,255,255,0.1)",
+  border: "1px solid rgba(255,255,255,0.14)",
+  transform: "rotate(-4deg)",
+};
+
+const progressTrackSx = {
+  width: "100%",
+  height: 8,
+  my: 2,
+  borderRadius: "999px",
+  backgroundColor: "rgba(255,255,255,0.14)",
+  overflow: "hidden",
+};
+
+const progressFillSx = {
+  width: "82%",
+  height: "100%",
+  borderRadius: "999px",
+  background: `linear-gradient(90deg, ${productGreen}, ${productBlue})`,
+};
+
+const interviewCardSx = {
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  gap: 2,
+  width: "78%",
+  maxWidth: 390,
+  p: 2.5,
+  borderRadius: "999px",
+  backgroundColor: "rgba(10, 16, 26, 0.78)",
+  border: "1px solid rgba(255,255,255,0.16)",
+};
+
+const privacySectionSx = {
+  py: { xs: 8, md: 11 },
+  mt: { xs: 3, md: 6 },
+  backgroundColor: "#f7f8fb",
+};
+
+const privacyOrbitSx = {
+  position: "relative",
+  width: 230,
+  height: 230,
+  mx: "auto",
+  mt: 6,
+};
+
+const orbitRingSx = {
+  position: "absolute",
+  inset: 10,
+  borderRadius: "50%",
+  border: "1px solid rgba(85,217,139,0.32)",
+};
+
+const orbitRingSmallSx = {
+  position: "absolute",
+  inset: 46,
+  borderRadius: "50%",
+  border: "1px solid rgba(39,195,243,0.2)",
+};
+
+const privacyCenterSx = {
+  position: "absolute",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 76,
+  height: 76,
+  borderRadius: "50%",
+  backgroundColor: "white",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "0 16px 34px rgba(15,23,42,0.12)",
+};
+
+const privacyIconOneSx = {
+  position: "absolute",
+  left: 18,
+  bottom: 48,
+  color: "#98a2b3",
+};
+
+const privacyIconTwoSx = {
+  position: "absolute",
+  right: 34,
+  top: 28,
+  color: "#98a2b3",
+};
+
+const privacyIconThreeSx = {
+  position: "absolute",
+  right: 20,
+  bottom: 52,
+  color: "#98a2b3",
+};
+
+const faqItemSx = {
+  borderTop: "1px solid #e5e7eb",
+  "&:last-of-type": {
+    borderBottom: "1px solid #e5e7eb",
+  },
+  "&:before": {
+    display: "none",
+  },
+  "& .MuiAccordionSummary-root": {
+    px: 0,
+    minHeight: 56,
+  },
+  "& .MuiAccordionDetails-root": {
+    px: 0,
+    pt: 0,
+    pb: 2.5,
+  },
+};
 
 export default Home;

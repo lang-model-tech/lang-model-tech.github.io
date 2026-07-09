@@ -1,11 +1,11 @@
 {
-  "name": "swactech",
+  "name": "c2-landing",
   "version": "0.1.0",
-  "homepage": "https://swactech.ng/",
+  "homepage": "https://lmtech.ai/",
   "private": true,
-  "author": "swactech",
+  "author": "LMTech",
   "license": "See license in https://www.creative-tim.com/license",
-  "description": "React version of Material Kit 2 by Creative Tim",
+  "description": "c2 landing page by LMTech",
   "bugs": {
     "url": "https://github.com/creativetimofficial/ct-material-kit-react/issues"
   },
