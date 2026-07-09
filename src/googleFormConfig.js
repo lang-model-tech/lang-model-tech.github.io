@@ -13,7 +13,6 @@ const googleFormConfig = {
       primaryInterest: "entry.1831992628",
       primaryInterestOptions: [
         "Early Access to the Product/Service",
-        "Exclusive Discounts and Offers",
         "Beta Testing and Feedback Opportunities",
         "Staying Updated on Launch News",
         "Other (Please specify below)",

@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
+import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 
 import googleFormConfig from "googleFormConfig";
@@ -41,12 +42,12 @@ const socialLinks = [
 
 function C2Layout({ children }) {
   const { hash, pathname } = useLocation();
+  const waitlistFields = googleFormConfig.fields.waitlistCard;
   const [openEarlyAccess, setOpenEarlyAccess] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    primaryInterest: "Start free",
-    additionalComments: "",
+    primaryInterest: waitlistFields.primaryInterestOptions[0],
   });
 
   const handleFieldChange = (field) => (event) => {
@@ -181,7 +182,7 @@ function C2Layout({ children }) {
               <Grid item xs={12}>
                 <MKInput
                   required
-                  name={googleFormConfig.fields.waitlistCard.fullName}
+                  name={waitlistFields.fullName}
                   type="text"
                   label="Full name"
                   fullWidth
@@ -192,7 +193,7 @@ function C2Layout({ children }) {
               <Grid item xs={12}>
                 <MKInput
                   required
-                  name={googleFormConfig.fields.waitlistCard.email}
+                  name={waitlistFields.email}
                   type="email"
                   label="Email"
                   fullWidth
@@ -202,18 +203,21 @@ function C2Layout({ children }) {
               </Grid>
               <Grid item xs={12}>
                 <MKInput
-                  name={googleFormConfig.fields.waitlistCard.primaryInterest}
-                  type="hidden"
-                  value={formData.primaryInterest}
-                />
-                <MKInput
-                  name={googleFormConfig.fields.waitlistCard.additionalComments}
-                  type="text"
-                  label="What are you hoping c2 helps with?"
+                  required
+                  select
+                  name={waitlistFields.primaryInterest}
+                  label="What is your primary interest in joining the waitlist?"
                   fullWidth
-                  value={formData.additionalComments}
-                  onChange={handleFieldChange("additionalComments")}
-                />
+                  value={formData.primaryInterest}
+                  onChange={handleFieldChange("primaryInterest")}
+                  sx={selectInputSx}
+                >
+                  {waitlistFields.primaryInterestOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </MKInput>
               </Grid>
             </Grid>
           </DialogContent>
@@ -299,6 +303,18 @@ const startButtonSx = {
   textTransform: "none",
   "&:hover": {
     boxShadow: "0 10px 26px rgba(17, 24, 39, 0.18)",
+  },
+};
+
+const selectInputSx = {
+  "& .MuiInputBase-root": {
+    minHeight: 44,
+  },
+  "& .MuiSelect-select": {
+    minHeight: "1.4375em",
+    display: "flex",
+    alignItems: "center",
+    py: "12.5px",
   },
 };
 
